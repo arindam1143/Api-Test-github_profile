@@ -1,0 +1,83 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api Test</title>
+</head>
+<body>
+    <h1>
+      Simple Api
+    </h1>
+    <input type="text" id="nameinput">
+    <br>
+    <br>
+
+    <input type="button" value="pull user data" id="btn">
+    <div id="div">
+    </div>
+    <p id="ptag">
+    </p>
+    <script>
+      let name=document.getElementById("nameinput");
+      let btn=document.getElementById("btn");
+      let maindiv=document.getElementById("div");
+      let ptag=document.getElementById("ptag");
+      let obj={};
+     let x=[];
+      btn.addEventListener("click",function(){
+        
+         let request=new XMLHttpRequest();
+        request.open("GET",`https://api.github.com/users/${name.value}/repos`,true);
+        request.send();
+        request.addEventListener("load",function(){
+
+          //console.log(request.responseText);
+          x=JSON.parse(request.responseText);
+          //add all the task 
+          addalldata();
+          console.log(x[0].id);
+         // console.log(x);
+
+        });
+        //obj.name=name.value;
+
+      });
+      function addalldata(){
+        let heading = document.createElement("h2");
+         let div1 = document.createElement("div");
+         let pic = document.createElement("img");
+         let followers = document.createElement("p");
+         let following = document.createElement("p");
+         let repos = document.createElement("p");
+        
+        //for name
+        let namerequset=new XMLHttpRequest();
+        namerequset.open("GET",`https://api.github.com/users/${name.value}`,true);
+        namerequset.send();
+        namerequset.addEventListener("load",(e) =>{
+          let nameobj=JSON.parse(e.target.responseText);
+          heading.innerHTML=nameobj.name+" (@"+name.value+")";
+          //console.log(x[0].name);
+          maindiv.append(heading);
+         console.log(nameobj);
+         pic.setAttribute("src",x[0].owner.avatar_url);
+         maindiv.append(pic);
+         followers.innerHTML="followers "+nameobj.followers;
+         maindiv.appendChild(followers);
+         following.innerHTML="following "+nameobj.following;
+         maindiv.appendChild(following);
+         repos.innerHTML="Repos "+nameobj.public_repos;
+         maindiv.appendChild(repos);
+         x.forEach(function(x){
+           let namerepo=document.createElement("h3");
+           namerepo.innerHTML=x.name;
+           maindiv.appendChild(namerepo);
+         });
+
+        })
+        
+      }
+     
+      </script>
+  </body>
