@@ -3,7 +3,7 @@ This is a web application that uses the GitHub API to retrieve and display a use
 
 #The application retrieves and displays the following user information:
 
-*Username
+*Username*
 *Name
 *Bio
 *Number of followers
